@@ -4,27 +4,21 @@
 */
 function loadData(idOrName,selector,callback = null){
   $(".loader").addClass("active");
-  $.getJSON("https://pokeapi.co/api/v2/pokemon/"+idOrName,(data)=>{
+  $.getJSON(`https://pokeapi.co/api/v2/pokemon/${idOrName}`,(data)=>{
     var img = data.sprites.other["official-artwork"].front_default;
     if(img == null){
-      img = data.sprites.front_default
+      img = data.sprites.front_default;
+      if(img == null){img = "https://cdn.browshot.com/static/images/not-found.png";}
     }
-    if(img == null){
-      img = "https://cdn.browshot.com/static/images/not-found.png";
-    }
-    console.log(img);
     $(selector).attr("src",img);
-    if(callback != null){
-      callback(data);
-    }
     $("#pokemon-input").val('');
-    
+    if(callback != null){callback(data);}
   }).fail(function(data){
     toggleWarn(data.responseText == 'Not Found'?'Pokémon no encontrado.':'Hubo un de servidor.');
     $("#pokemon-input").val('');
     setTimeout(toggleWarn,2000);
     $(".loader").removeClass("active");
-    });
+  });
     
 
 }
@@ -32,11 +26,8 @@ function loadData(idOrName,selector,callback = null){
   correctas
 */
 function idProcess(id,def = true){
-  if(id > 1){
-    loadData(id - 1,"#pokemon-image-left")
-  }else{
-    $("#pokemon-image-left").attr("src","")
-  }
+  if(id > 1){loadData(id - 1,"#pokemon-image-left")}
+  else{$("#pokemon-image-left").attr("src","")}
   if(def){
     loadData(id,"#pokemon-image",function(data){
       $("#name-pokemon").text(data.id+" - "+data.name);
@@ -45,17 +36,6 @@ function idProcess(id,def = true){
   
   loadData(id + 1,"#pokemon-image-right")
 }
-/* Busca el pokemon y ejecuta los cambios */ 
-function searchPokemon(callback){
-  
-  var pokemonName = $("#pokemon-input").val().toLowerCase();
-    loadData(pokemonName,"#pokemon-image",function(data){
-      callback(data.id);
-      idProcess(data.id,false);
-      $("#name-pokemon").text(data.id+" - "+data.name);
-    })
-}
-
 /* Muestra o elimina la notificación */
 function toggleWarn(msg = undefined){
   if(msg != undefined){
@@ -77,8 +57,18 @@ function syncPhotos(){
     contLoad++;
     if(contLoad == topLoad){
       $(".loader").removeClass("active");
+      /*  Para evitar bug al avanzar muy rapido entre img */
+      var listImg = [
+        $("#pokemon-image").attr("src"),
+        $("#pokemon-image-left").attr("src"),
+        $("#pokemon-image-right").attr("src")
+      ]
+      if(listImg[0] == listImg[1] || listImg[0] == listImg[2] || listImg[1] == listImg[2]){
+        idProcess(currentPokemonId);
+      }
       contLoad = 0;
     }
+
   }
 }
 
@@ -88,6 +78,17 @@ $(function() {
   /* Escribe tu código aquí */
   idProcess(currentPokemonId);
 
+
+  /* Busca el pokemon y ejecuta los cambios */ 
+  function searchPokemon(){
+    var pokemonName = $("#pokemon-input").val().toLowerCase();
+    loadData(pokemonName,"#pokemon-image",function(data){
+      currentPokemonId = data.id;
+      idProcess(data.id,false);
+      $("#name-pokemon").text(data.id+" - "+data.name);
+    });
+}
+
   /* Eventos de buscade */
   $("#btn-search").click(function(){
     if($("#pokemon-input").val() == ''){
@@ -95,12 +96,7 @@ $(function() {
       setTimeout(toggleWarn,1000);
       return;
     }
-    
-      searchPokemon(function(id){
-        currentPokemonId = id;
-      });
-
-    
+    searchPokemon();
   });
   $("#pokemon-input").keydown(function(e){
     if(e.keyCode == 13){
@@ -109,9 +105,7 @@ $(function() {
         setTimeout(toggleWarn,1000);
         return;
       }
-      searchPokemon(function(id){
-        currentPokemonId = id;
-      });
+      searchPokemon();
     }
   });
 
@@ -138,13 +132,7 @@ $(function() {
   /* Enevtos de carga de imagenes */
   var sPhotos = new syncPhotos();
   
-  $("#pokemon-image").on("load",function(e){
-    sPhotos.run(currentPokemonId)
-  });
-  $("#pokemon-image-left").on("load",function(){
-    sPhotos.run(currentPokemonId)
-  });
-  $("#pokemon-image-right").on("load",function(){
+  $("#pokemon-image,#pokemon-image-left,#pokemon-image-right").on("load",function(e){
     sPhotos.run(currentPokemonId)
   });
   /* Hasta aquí :) */
