@@ -24,6 +24,9 @@ function loadData(idOrName,selector,callback = null){
 }
 /* Prcoesa la id , para poner todas las fotos 
   correctas
+  def si es true , carga la imagen principal
+  y es se carga por defecto
+  pero si se cargo antes, para no repetir el proceso , se puede pasar false
 */
 function idProcess(id,def = true){
   if(id > 1){loadData(id - 1,"#pokemon-image-left")}
@@ -31,6 +34,7 @@ function idProcess(id,def = true){
   if(def){
     loadData(id,"#pokemon-image",function(data){
       $("#name-pokemon").text(data.id+" - "+data.name);
+      $("#more-info-iframe").attr("src",`https://pokemon.fandom.com/es/wiki/${data.name}`);
     });
   }
   
@@ -49,15 +53,11 @@ function syncPhotos(){
   var contLoad = 0;
   var topLoad;
   this.run = function(currentPokemonId){
-    if(currentPokemonId == 1){
-      topLoad = 2;
-    }else{
-      topLoad = 3;
-    }
+    topLoad = (currentPokemonId == 1?2:3);
     contLoad++;
     if(contLoad == topLoad){
       $(".loader").removeClass("active");
-      /*  Para evitar bug al avanzar muy rapido entre img */
+      /* Para evitar bugs , cuando el usuario pasa muy rapido entre */
       var listImg = [
         $("#pokemon-image").attr("src"),
         $("#pokemon-image-left").attr("src"),
@@ -71,6 +71,16 @@ function syncPhotos(){
 
   }
 }
+
+/* Añade texto para que se vea de forma vertical */
+function addVerticalText(selector,text){
+  $(selector).html("");
+  for(const letra of text){
+    var temp_cont = $(selector).html();
+    $(selector).html(temp_cont+"<span>"+(letra == " "?"<br>":letra)+"</span>");
+  }
+}
+
 
 $(function() {
   var currentPokemonId = 1;
@@ -86,6 +96,7 @@ $(function() {
       currentPokemonId = data.id;
       idProcess(data.id,false);
       $("#name-pokemon").text(data.id+" - "+data.name);
+      $("#more-info-iframe").attr("src",`https://pokemon.fandom.com/es/wiki/${data.name}`);
     });
 }
 
@@ -134,6 +145,20 @@ $(function() {
   
   $("#pokemon-image,#pokemon-image-left,#pokemon-image-right").on("load",function(e){
     sPhotos.run(currentPokemonId)
+  });
+
+
+  addVerticalText("#more-info-btn","Mostrar Información");
+
+  $("#more-info-btn").click(function(){
+    
+    if($(".more-info").hasClass('active')){
+      addVerticalText("#more-info-btn","Mostrar Información");
+      $(".more-info").removeClass('active');
+      return;
+    }
+    addVerticalText("#more-info-btn","Ocultar Información");
+      $(".more-info").addClass('active');
   });
   /* Hasta aquí :) */
   
