@@ -237,13 +237,29 @@ h1{
 }
 
 
-.pokemon-arrow{
+.pokemon-arrows{
   margin-top:10px;
-  font-size:30px;
+  font-size:20px;
   display:flex;
   justify-content: space-around;
 }
-.pokemon-left{
+.pokemon-arrows button{
+  background: transparent;
+  border:none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pokemon-arrow{
+  position: relative;
+  font-size:30px;
+  left:0px;
+  transition:ease left 0.3s;
+  -o-transition:ease left 0.3s;
+  -moz-transition:ease left 0.3s;
+  -webkit-transition:ease left 0.3s;
+}
+#pokemon-left{
   cursor: pointer;
   color:#88304e;
   transition:ease all 0.3s;
@@ -251,7 +267,7 @@ h1{
   -moz-transition:ease all 0.3s;
   -webkit-transition:ease all 0.3s;
 }
-.pokemon-right{
+#pokemon-right{
   cursor: pointer;
   color:#88304e;
   transition:ease all 0.3s;
@@ -259,13 +275,24 @@ h1{
   -moz-transition:ease all 0.3s;
   -webkit-transition:ease all 0.3s;
 }
-.pokemon-left:hover{
+#pokemon-left .pokemon-arrow{
+  margin-right:5px;
+}
+#pokemon-right .pokemon-arrow{
+  margin-left:5px;
+}
+#pokemon-left:hover{
   color:#e23e57;
 }
-.pokemon-right:hover{
+#pokemon-right:hover{
   color:#e23e57;
 }
-
+#pokemon-left:hover .pokemon-arrow{
+  left:-7.5px !important;
+}
+#pokemon-right:hover .pokemon-arrow{
+  left:7.5px !important;
+}
 
 
 #pokemon-data{
@@ -309,7 +336,7 @@ h1{
   color:#e23e57;
 }
 
-
+/* Mensjae de alerta */
 .cont-aviso{
   position: fixed;
   background: white;
@@ -333,7 +360,7 @@ h1{
   opacity:0.8 !important;
 }
 
-
+/* Pokeball cargando */
 .loader {
   opacity:0;
   position: fixed;
@@ -368,6 +395,56 @@ h1{
   0% { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
 }
+
+/* Esitlo de mas informacion del pokemon */
+
+.more-info{
+  position: fixed;
+  width:70%;
+  height:100%;
+  z-index:1000;
+  left:100%;
+  background: white;
+  transition:ease all 0.3s;
+  -o-transition:ease all 0.3s;
+  -moz-transition:ease all 0.3s;
+  -webkit-transition:ease all 0.3s;
+  
+}
+.container-info,.container-info iframe{
+  width:100%;
+  height:100%;
+}
+.container-info{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#more-info-btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  left:-50px;
+  width:50px;
+  border-radius:10px 0px 0px 10px;
+  height:70%;
+  color:white;
+  border:solid 2px black;
+  background: #385CAA;
+  box-sizing: border-box;
+  cursor: pointer;;
+}
+#more-info span{
+  height:20px;
+  font-size:20px;
+}
+.more-info.active{
+  left:30% !important;
+}
+
 
 /* Por si se ve en movil */
 @media only screen and (max-width: 450px){
