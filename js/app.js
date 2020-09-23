@@ -57,15 +57,21 @@ function syncPhotos(){
     contLoad++;
     if(contLoad == topLoad){
       $(".loader").removeClass("active");
-      /* Para evitar bugs , cuando el usuario pasa muy rapido entre */
+      /* Para evitar bugs , cuando el usuario pasa muy rapido entre 
+      Es opcional */
       var listImg = [
         $("#pokemon-image").attr("src"),
         $("#pokemon-image-left").attr("src"),
         $("#pokemon-image-right").attr("src")
       ]
-      if(listImg[0] == listImg[1] || listImg[0] == listImg[2] || listImg[1] == listImg[2]){
-        idProcess(currentPokemonId);
+      var urlNotFound = "https://cdn.browshot.com/static/images/not-found.png";
+      if(listImg[0] != urlNotFound && listImg[1] != urlNotFound && listImg[2] != urlNotFound){
+        if(listImg[0] == listImg[1] || listImg[0] == listImg[2] || listImg[1] == listImg[2]){
+          idProcess(currentPokemonId);
+        }
       }
+      /* Hasta aca */
+      
       contLoad = 0;
     }
 
