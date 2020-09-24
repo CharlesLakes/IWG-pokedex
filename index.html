@@ -20,13 +20,13 @@
         <div class="cont-input">
           <input id="pokemon-input" type="text" placeholder="Ingresa el nombre o id">
         </div>
-        <button id="btn-search">Buscar</button>
+        <button id="btn-search" type="button" role="button">Buscar</button>
       </div>
       <div class="pokemon-arrows">
-        <button id="pokemon-left" class="pokemon-left">
+        <button id="pokemon-left" type="button" class="pokemon-left" role="button">
           <i class="fas fa-arrow-left pokemon-arrow"></i>Atrás
         </button>
-        <button id="pokemon-right" class="pokemon-right">
+        <button id="pokemon-right" type="button" class="pokemon-right" role="button">
           Siguiente<i class="fas fa-arrow-right pokemon-arrow"></i> 
         </button>
       </div>
@@ -34,9 +34,9 @@
     </div>
     <h2 id="name-pokemon">Info</h2>
     <div id="pokemon-data">
-      <img id="pokemon-image-left" class="image-lat pokemon-left" src="" alt="pokemon-image-left" />
+      <img id="pokemon-image-left" class="image-lat pokemon-left" src="" alt="pokemon-image-left" role="button"/>
       <img id="pokemon-image" src="" alt="pokemon-image" />
-      <img id="pokemon-image-right" class="image-lat pokemon-right" src="" alt="pokemon-image" />
+      <img id="pokemon-image-right" class="image-lat pokemon-right" src="" alt="pokemon-image" role="button"/>
     </div>
   </div>
   <div class="logo-pokedex">
@@ -47,7 +47,7 @@
   </div>
   <div class="more-info">
     <div class="container-info">
-      <div id="more-info-btn"></div>
+      <div id="more-info-btn" role="button"></div>
       <iframe id="more-info-iframe" src="https://pokemon.fandom.com/es/wiki/bulbasaur" frameborder="0"></iframe>
     </div>
   </div>

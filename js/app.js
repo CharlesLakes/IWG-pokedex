@@ -81,6 +81,10 @@ function syncPhotos(){
 /* Añade texto para que se vea de forma vertical */
 function addVerticalText(selector,text){
   $(selector).html("");
+  if(window.innerWidth <= 600 ){
+    $(selector).html("<span>"+text+"</span>");
+    return;
+  }
   for(const letra of text){
     var temp_cont = $(selector).html();
     $(selector).html(temp_cont+"<span>"+(letra == " "?"<br>":letra)+"</span>");
