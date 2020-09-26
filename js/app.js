@@ -132,7 +132,7 @@ $(function() {
 
   /* Eventos para cambiar entre siguiente y anterior */
   $(".pokemon-right").click(function(){
-    currentPokemonId += 1;
+    currentPokemonId = currentPokemonId == 893?893:currentPokemonId + 1;
     idProcess(currentPokemonId);
   })
   $(".pokemon-left").click(function(){
